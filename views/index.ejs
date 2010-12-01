@@ -11,6 +11,6 @@ to see how you progress.  Wanna participate? Then <a href="/auth/twitter">login 
 <div>
 <h2>Recent Photos</h2>
 <% for (var i=0; i<pictures.length;i++) { %>
-	<img src="/image/<%= pictures[i].num %>" width="200" />
+	<a href="/p/<%= pictures[i].username %>"><img src="/image/<%= pictures[i].num %>" width="200" border="0" /></a>
 <% } %>
 </div
