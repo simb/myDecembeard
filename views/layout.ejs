@@ -1,14 +1,27 @@
-<html>                                              
-          <head>                                             
-            <title>Decembeard</title> 
-            <script src="http://static.ak.fbcdn.net/connect/en_US/core.js"></script> 
-          </head>                                            
-          <body>                                             
-            <div id="wrapper">                               
-                <%- body %>                                   
-            </div>                                           
-          </body>                                            
-        </html>
-
-
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+	<head>
+		<title>
+			Decembeard
+		</title>
+		<link rel="stylesheet" media="screen" href="css/main.css" />
+		
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="header">
+				<div id="logo"><span><a href="/">Decembeard</a></span></div>
+				<div id="header-links">
+					<a href="/auth/twitter">Login</a> |
+					<a href="/logout">Logout</a>
+				</div>
+			</div>
+			<div id="content">
+			<%- body %>
+			</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</body>
+</html>
