@@ -7,6 +7,7 @@ var sys = require('sys'),
 	OAuth = require('oauth').OAuth,
 	formidable = require('formidable'),
 	fs = require('fs'),
+	ObjectID = require('mongodb/bson/bson').ObjectID,
 	mongoose = require('mongoose').Mongoose,
 	db       = mongoose.connect('mongodb://127.0.0.1/decembeard'),
 	Picture  = require('./models/picture');
@@ -55,8 +56,9 @@ server.get('/p/:username', function(req, res){
 	
 });
 
-server.get('/p/:username/image', function(req, res){
-	Picture.find({username: req.params.username }).last(function(pic){
+server.get('/image/:objectID', function(req, res){
+	Picture.find({num: req.params.objectID }).last(function(pic){
+	//Picture.findById(req.params.objectID, function(pic){
 		var buffer = new Buffer(pic.photo_data,'base64');
 		res.writeHead(200, {'content-type': 'image/jpeg'});
 		res.end(buffer);
@@ -84,6 +86,7 @@ server.post('/upload', function(req, res){
 			        'Location': "/p/"+ req.getAuthDetails().user.username
 			    });
 			    res.end('');
+				
 			});
 		
 			
@@ -152,6 +155,16 @@ server.dynamicHelpers({
         return req.getAuthDetails().user;
     }
 });
+server.helpers({
+    ObjectID: function(id){ 
+		var oid = ObjectID(id.id);
+		console.log(id);
+		console.log(oid);
+		return oid
+	}
+    
+});
+
 
 //Start the server on port 8124 and start processing requests
 server.listen(8124);
