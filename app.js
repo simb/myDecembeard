@@ -45,12 +45,7 @@ server.get('/', function(req, res, params) {
 
 server.get('/p/:username', function(req, res){
 	Picture.find({username: req.params.username }).all(function(pics){
-        //c.num = c.num + 1;
-        //c.save(function(){
-        // res.render('index', {locals: {count: c.num}});
-        //});
-		console.dir(pics);
-		res.render('profile.ejs', {
+        res.render('profile.ejs', {
 	        locals: {
 	            username: req.params.username,
 				pictures: pics
@@ -62,10 +57,9 @@ server.get('/p/:username', function(req, res){
 
 server.get('/p/:username/image', function(req, res){
 	Picture.find({username: req.params.username }).last(function(pic){
-       
-		console.dir(pic.username);
+		var buffer = new Buffer(pic.photo_data,'base64');
 		res.writeHead(200, {'content-type': 'image/jpeg'});
-		res.end(pic.photo_data);
+		res.end(buffer);
 	});
 	
 });
@@ -85,10 +79,12 @@ server.post('/upload', function(req, res){
 	    form.parse(req, function(err, fields, files) {
 			
 			fs.readFile(files.upload.path, function (err, buffer) {
-				//console.log(req);
+			
 				var photo_data = buffer;
-				console.dir({username: req.getAuthDetails().user});
-		    	var p = new Picture({username: req.getAuthDetails().user.username, photo_data: photo_data});
+				
+		    	var p = new Picture({username: req.getAuthDetails().user.username, photo_data: photo_data.toString('base64')});
+				//p.photo_data = photo_data;
+				console.log(p);
 				p.save();
 				res.writeHead(200, {'content-type': 'image/jpeg'});
 				res.end(photo_data);
