@@ -64,13 +64,6 @@ server.get('/p/:username/image', function(req, res){
 	
 });
 
-server.get('/image', function(req, res){
-	fs.readFile('/tmp/eb178bab255395c16f2ff3cea7a85da4', function (err, buffer) {
-		res.writeHead(200, {'content-type': 'image/jpeg'});
-		res.end(buffer);
-	});
-});
-
 server.post('/upload', function(req, res){
 	if (!req.isAuthenticated()) {
 		res.render('noauth.ejs')
@@ -83,12 +76,14 @@ server.post('/upload', function(req, res){
 				var photo_data = buffer;
 				
 		    	var p = new Picture({username: req.getAuthDetails().user.username, photo_data: photo_data.toString('base64')});
-				//p.photo_data = photo_data;
-				console.log(p);
+				
 				p.save();
-				res.writeHead(200, {'content-type': 'image/jpeg'});
-				res.end(photo_data);
-		  		//res.end(sys.inspect({fields: fields, files: files.upload.path}));
+				//res.writeHead(200, {'content-type': 'image/jpeg'});
+				//res.end(photo_data);
+		  		res.writeHead(303, {
+			        'Location': "/p/"+ req.getAuthDetails().user.username
+			    });
+			    res.end('');
 			});
 		
 			
