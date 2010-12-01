@@ -1,0 +1,14 @@
+<% if (authenticated) { %>
+	
+
+<h2>Create Today&apos;s Photo</h2>
+<form action="/upload" enctype="multipart/form-data" method="post">
+	
+	Photo: <input type="file" name="upload" multiple="multiple"><br>
+	<input type="submit" value="Upload">
+</form>
+
+<% } %>
+
+<h2>Photos for <%= username %></h2>
+<p><%= pictures.length %>

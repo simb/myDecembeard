@@ -13,7 +13,7 @@ http.createServer(function(req, res) {
       res.end(sys.inspect({fields: fields, files: files}));
     });
     return;
-  }ssss 
+  }
 
   // show a file upload form
   res.writeHead(200, {'content-type': 'text/html'});

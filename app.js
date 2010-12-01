@@ -5,6 +5,11 @@ var sys = require('sys'),
 	MemoryStore = require('connect/middleware/session/memory'),
 	auth = require('./lib/index'),
 	OAuth = require('oauth').OAuth,
+	formidable = require('formidable'),
+	fs = require('fs'),
+	mongoose = require('mongoose').Mongoose,
+	db       = mongoose.connect('mongodb://127.0.0.1/decembeard'),
+	Picture  = require('./models/picture');
 	twitterConsumerKey = "k0HHkKlwFe72tzMLbf9tw",
 	twitterConsumerSecret = "LaGBpRfPPjc7ZHJBidzWHOIvmAS9MoauUkV2fZJr4g";
 
@@ -34,15 +39,58 @@ server.get('/', function(req, res, params) {
     if (!req.isAuthenticated()) {
         res.render('index.ejs');
     } else {
-        res.render('home.ejs', {
-	        locals: {
-	            user: req.getAuthDetails().user
-	        }
-	    });
+        res.render('home.ejs');
     }
 })
-server.get('/p/:id', function(req, res){
-    res.send('user ' + req.params.id);
+
+server.get('/p/:username', function(req, res){
+	Picture.find({username: req.params.username }).all(function(pics){
+        //c.num = c.num + 1;
+        //c.save(function(){
+        // res.render('index', {locals: {count: c.num}});
+        //});
+		console.dir(pics);
+		res.render('profile.ejs', {
+	        locals: {
+	            username: req.params.username,
+				pictures: pics
+	        }
+	    });
+      });
+	
+});
+
+server.get('/p/:username/image', function(req, res){
+	Picture.find({username: req.params.username }).last(function(pic){
+       
+		console.dir(pic.username);
+		res.writeHead(200, {'content-type': 'image/jpeg'});
+		res.end(pic.photo_data);
+	});
+	
+});
+
+server.post('/upload', function(req, res){
+	if (!req.isAuthenticated()) {
+		res.render('noauth.ejs')
+	}else{
+		var form = new formidable.IncomingForm();
+	    form.parse(req, function(err, fields, files) {
+			
+			fs.readFile(files.upload.path, "binary", function (err, buffer) {
+				//console.log(req);
+				var photo_data = buffer;
+				console.dir({username: req.getAuthDetails().user});
+		    	var p = new Picture({username: req.getAuthDetails().user.username, photo_data: photo_data});
+				p.save();
+				res.writeHead(200, {'content-type': 'image/jpeg'});
+				res.end(photo_data);
+		  		//res.end(sys.inspect({fields: fields, files: files.upload.path}));
+			});
+		
+			
+	    });
+	}
 });
 
 server.get('/auth/twitter', function(req, res, params) {
@@ -60,7 +108,7 @@ server.get('/auth/twitter', function(req, res, params) {
             function(error, data) {
                 
 				res.writeHead(303, {
-			        'Location': "/"
+			        'Location': "/p/"+ req.getAuthDetails().user.username
 			    });
 			    res.end('');
             });
@@ -82,7 +130,30 @@ server.get('/logout', function(req, res, params) {
     res.end('');
 })
 
+server.get('/noauth', function(req, res, params) {
+    res.render('noauth.ejs');
+})
 
+// Example 500 page
+server.error(function(err, req, res){
+    console.dir(err.message);
+    res.render('500.ejs');
+});
+
+// Example 404 page via simple Connect middleware
+server.use(function(req, res){
+    res.render('404.ejs');
+});
+
+//dynamic helpers allow us to access request data inside views
+server.dynamicHelpers({
+    authenticated: function(req, res){
+        return req.isAuthenticated();
+    },
+	user: function(req, res){
+        return req.getAuthDetails().user;
+    }
+});
 
 //Start the server on port 8124 and start processing requests
 server.listen(8124);
