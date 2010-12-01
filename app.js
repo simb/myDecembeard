@@ -16,8 +16,8 @@ var server = express.createServer(
 	express.bodyDecoder(),
 	auth([
 		auth.Twitter({
-	    consumerKey: twitterConsumerKey,
-	    consumerSecret: twitterConsumerSecret
+	    	consumerKey: twitterConsumerKey,
+	    	consumerSecret: twitterConsumerSecret
 		})
 	])
 );
@@ -36,11 +36,7 @@ server.get('/auth/twitter', function(req, res, params) {
             oa.getProtectedResource("http://twitter.com/statuses/user_timeline.xml", "GET",
             req.getAuthDetails()["twitter_oauth_token"], req.getAuthDetails()["twitter_oauth_token_secret"],
             function(error, data) {
-                /*res.writeHead(200, {
-                    'Content-Type': 'text/html'
-                })
-                res.end("<html><h1>Hello! Twitter authenticated user (" + req.getAuthDetails().user.username + ")</h1>" + data + "</html>")
-				*/
+                
 				res.writeHead(303, {
 			        'Location': "/"
 			    });
@@ -55,13 +51,6 @@ server.get('/auth/twitter', function(req, res, params) {
         }
     });
 })
-
-server.get('/auth/callback', function(req, res, params) {
-	res.writeHead(200, {
-        'Content-Type': 'text/html'
-    })
-    res.end("<html><h1>Details</h1><div>" + sys.inspect(req.body) + "</div")
-});
 
 server.get('/logout', function(req, res, params) {
     req.logout();
