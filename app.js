@@ -49,7 +49,8 @@ server.get('/p/:username', function(req, res){
         res.render('profile.ejs', {
 	        locals: {
 	            username: req.params.username,
-				pictures: pics
+				pictures: pics,
+				myProfile: (req.isAuthenticated() && req.params.username == req.getAuthDetails().user.username)
 	        }
 	    });
       });

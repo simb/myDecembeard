@@ -1,4 +1,4 @@
-<% if (authenticated) { %>
+<% if (myProfile) { %>
 	
 
 <h2>Create Today&apos;s Photo</h2>
@@ -10,7 +10,13 @@
 
 <% } %>
 
+<% if ( pictures.length == 0 ) { %>
+<h2>No Photos Found for <%= username %></h2>
+<% }else{ %>
+
 <h2>Photos for <%= username %></h2>
 <% for (var i=0; i<pictures.length;i++) { %>
 	<img src="/image/<%= pictures[i].num %>" width="300" />
+<% } %>
+
 <% } %>
