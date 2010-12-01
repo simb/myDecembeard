@@ -71,7 +71,7 @@ server.get('/p/:username/image', function(req, res){
 });
 
 server.get('/image', function(req, res){
-	fs.readFile('/tmp/eb178bab255395c16f2ff3cea7a85da4', "binary", function (err, buffer) {
+	fs.readFile('/tmp/eb178bab255395c16f2ff3cea7a85da4', function (err, buffer) {
 		res.writeHead(200, {'content-type': 'image/jpeg'});
 		res.end(buffer);
 	});
@@ -84,7 +84,7 @@ server.post('/upload', function(req, res){
 		var form = new formidable.IncomingForm();
 	    form.parse(req, function(err, fields, files) {
 			
-			fs.readFile(files.upload.path, "binary", function (err, buffer) {
+			fs.readFile(files.upload.path, function (err, buffer) {
 				//console.log(req);
 				var photo_data = buffer;
 				console.dir({username: req.getAuthDetails().user});
