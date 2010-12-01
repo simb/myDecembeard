@@ -74,7 +74,7 @@ server.get('/image', function(req, res){
 	fs.readFile('/tmp/eb178bab255395c16f2ff3cea7a85da4', "binary", function (err, buffer) {
 		res.writeHead(200, {'content-type': 'image/jpeg'});
 		res.end(buffer);
-	}
+	});
 });
 
 server.post('/upload', function(req, res){
