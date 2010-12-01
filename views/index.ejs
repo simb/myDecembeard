@@ -1,6 +1,16 @@
-<h1>Not authenticated</h1>                     
-              <div style="float:left;margin-left:5px">       
-                <a href="/auth/twitter" style="border:0px">  
+<h1>Welcome to the Decembeard Project</h1>
+<p>
+Decembeard is an opportunity for men to do what they do best. Grow Hair. 
+The idea is that you save at the beginning of the month and then take daily photos
+to see how you progress.  Wanna participate? Then <a href="/auth/twitter">login with twitter</a> and post your first pic.
+</p>                     
+
+               <!-- <a href="/auth/twitter" style="border:0px">  
                   <img style="border:0px" src="http://apiwiki.twitter.com/f/1242697715/Sign-in-with-Twitter-darker.png"/>
-                </a>                                         
-              </div>
+                </a> -->                                       
+<div>
+<h2>Recent Photos</h2>
+<% for (var i=0; i<pictures.length;i++) { %>
+	<img src="/image/<%= pictures[i].num %>" width="200" />
+<% } %>
+</div

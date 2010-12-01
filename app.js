@@ -38,7 +38,15 @@ server.set('views', __dirname + '/views');
 server.get('/', function(req, res, params) {
     var self = this;
     if (!req.isAuthenticated()) {
-        res.render('index.ejs');
+		//Chirp.find().sort([['date', 'descending']]).all
+		Picture.find().sort([['created_on', 'descending']]).limit(10).all(function(pics){
+			res.render('index.ejs',{
+				locals: {
+					pictures: pics
+		        }
+			});
+		});
+        
     } else {
         res.render('home.ejs');
     }
