@@ -53,7 +53,7 @@ server.get('/', function(req, res, params) {
 })
 
 server.get('/p/:username', function(req, res){
-	Picture.find({username: req.params.username }).all(function(pics){
+	Picture.find({username: req.params.username }).sort([['created_on', 'descending']]).all(function(pics){
         res.render('profile.ejs', {
 	        locals: {
 	            username: req.params.username,
