@@ -5,12 +5,23 @@
 			Decembeard
 		</title>
 		<link rel="stylesheet" media="screen" href="/css/main.css" />
-		
+		<!-- Piwik -->
+		<script type="text/javascript">
+		var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.pnwrain.com/" : "http://stats.pnwrain.com/");
+		document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+		</script><script type="text/javascript">
+		try {
+		var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 6);
+		piwikTracker.trackPageView();
+		piwikTracker.enableLinkTracking();
+		} catch( err ) {}
+		</script><noscript><p><img src="http://stats.pnwrain.com/piwik.php?idsite=6" style="border:0" alt="" /></p></noscript>
+		<!-- End Piwik Tag -->
 	</head>
 	<body>
 		<div id="wrapper">
 			<div id="header">
-				<div id="logo"><span><a href="/">Decembeard</a></span></div>
+				<div id="logo"><span><a href="/"><img src="/images/assets/myDecembeard_logo_trans.png" border="0"></a></span></div>
 				<div id="header-links">
 					<% if (authenticated) { %>
 						<a href="/logout">Logout</a>
