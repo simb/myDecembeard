@@ -12,9 +12,9 @@ var sys = require('sys'),
 	db       = mongoose.connect('mongodb://127.0.0.1/decembeard'),
 	Picture  = require('./models/picture');
 
-var env = process.env.NODE_ENV || "development";
-//read in settings file
-
+//check our env var and set it to production if one is not provided
+var env = process.env.NODE_ENV || "production";
+//read in settings file based on environment
 try {
   var keys= require('./keys_' + env);
   for(var key in keys) {
@@ -215,3 +215,4 @@ server.helpers({
 
 //Start the server on port 8124 and start processing requests
 server.listen(8124);
+console.log("Starting server with " + env + " settings")
