@@ -1,0 +1,8 @@
+//twitter developer keys
+exports.twitterConsumerKey= "KkDYBosk9Ew7UDKaXxaRQ";
+exports.twitterConsumerSecret= "5Q6Uneexkyz1tfEJpVTx9GtnWxkRsXqxzziz0atM";
+
+//facebook keys
+exports.fbId= "136200536433630";
+exports.fbSecret= "1a0d7638af7cd5b24eef4fe69d5b30e6";
+exports.fbCallbackAddress= "http://localhost:8124/auth/facebook_callback"

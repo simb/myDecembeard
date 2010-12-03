@@ -11,8 +11,20 @@ var sys = require('sys'),
 	mongoose = require('mongoose').Mongoose,
 	db       = mongoose.connect('mongodb://127.0.0.1/decembeard'),
 	Picture  = require('./models/picture');
-	twitterConsumerKey = "k0HHkKlwFe72tzMLbf9tw",
-	twitterConsumerSecret = "LaGBpRfPPjc7ZHJBidzWHOIvmAS9MoauUkV2fZJr4g";
+
+var env = process.env.NODE_ENV || "development";
+//read in settings file
+
+try {
+  var keys= require('./keys_' + env);
+  for(var key in keys) {
+    global[key]= keys[key];
+  }
+}
+catch(e) {
+  console.log('Unable to locate the key file. ' + e);
+  return;
+}
 
 //We need to create the server and initialize the modules we are gonna use.
 var server = express.createServer(
@@ -27,12 +39,16 @@ var server = express.createServer(
 		auth.Twitter({
 	    	consumerKey: twitterConsumerKey,
 	    	consumerSecret: twitterConsumerSecret
-		})
+		}),
+		auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})
 	]),
-	express.staticProvider(__dirname + '/public')
+	express.staticProvider(__dirname + '/public'),
+	express.staticProvider(__dirname + '/webcam')
 );
 //set the directory for express to look in for our views
 server.set('views', __dirname + '/views');
+
+
 
 //Let setup the routes for our application.
 server.get('/', function(req, res, params) {
@@ -75,14 +91,22 @@ server.get('/image/:objectID', function(req, res){
 	
 });
 
+server.post('/webcam', function(req, res){
+	var form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+		console.log(sys.inspect([err,fields,files]));
+	});
+});
+
 server.post('/upload', function(req, res){
+	console.log('upload: ' + req.isAuthenticated() + server.env.NODE_ENV)
 	if (!req.isAuthenticated()) {
 		res.render('noauth.ejs')
 	}else{
 		var form = new formidable.IncomingForm();
 	    form.parse(req, function(err, fields, files) {
 			
-			fs.readFile(files.upload.path, function (err, buffer) {
+			fs.readFile(files.image.path, function (err, buffer) {
 			
 				var photo_data = buffer;
 				
@@ -105,6 +129,7 @@ server.post('/upload', function(req, res){
 
 server.get('/auth/twitter', function(req, res, params) {
     req.authenticate(['twitter'], function(error, authenticated) {
+	
         if (authenticated) {
             var oa = new OAuth("http://twitter.com/oauth/request_token",
            		"http://twitter.com/oauth/access_token",
@@ -124,14 +149,27 @@ server.get('/auth/twitter', function(req, res, params) {
             });
         }
         else {
-            res.writeHead(200, {
-                'Content-Type': 'text/html'
-            })
-            res.end("<html><h1>Twitter authentication failed :( </h1></html>")
+            res.writeHead(303, {
+		        'Location': "/"
+		    });
+		    res.end('');
         }
     });
 })
-
+server.get ('/auth/facebook', function(req, res, params) {
+    req.authenticate(['facebook'], function(error, authenticated) {
+      res.writeHead(200, {'Content-Type': 'text/html'})
+      if( authenticated ) {
+        	res.writeHead(303, {
+		        'Location': "/p/"+ req.getAuthDetails().user.username
+		    });
+		    res.end('');
+      }
+      else {
+        res.end("<html><h1>Facebook authentication failed :( </h1></html>")
+      }
+    });
+  })
 server.get('/logout', function(req, res, params) {
     req.logout();
     res.writeHead(303, {
@@ -146,7 +184,7 @@ server.get('/noauth', function(req, res, params) {
 
 // Example 500 page
 server.error(function(err, req, res){
-    console.dir(err.message);
+    console.dir(sys.inspect(err));
     res.render('500.ejs');
 });
 
