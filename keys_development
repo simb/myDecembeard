@@ -1,6 +1,6 @@
 //twitter developer keys
-exports.twitterConsumerKey= "KkDYBosk9Ew7UDKaXxaRQ";
-exports.twitterConsumerSecret= "5Q6Uneexkyz1tfEJpVTx9GtnWxkRsXqxzziz0atM";
+exports.twitterConsumerKey= "kkbn1LAvZGBV9uqe6Un5jQ";
+exports.twitterConsumerSecret= "0i8m5yLaeOB6tD35TTM3UDFH3005ENWIx5jtY26CWY";
 
 //facebook keys
 exports.fbId= "136200536433630";

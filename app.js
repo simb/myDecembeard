@@ -64,7 +64,10 @@ server.get('/', function(req, res, params) {
 		});
         
     } else {
-        res.render('home.ejs');
+        res.writeHead(303, {
+	        'Location': "/p/"+ req.getAuthDetails().user.username
+	    });
+	    res.end('');
     }
 })
 
