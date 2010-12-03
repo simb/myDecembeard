@@ -7,6 +7,8 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import flash.net.navigateToURL;
+			
 			import model.MultipartRequest;
 			import model.PictureManager;
 			
@@ -57,6 +59,10 @@
 			}
 			private function onComplete(event:Event):void {
 				trace('Image Uploaded');
+				//navigateToURL(new URLRequest('javascript: refreshPage()'));
+				var jscommand:String = "window.location.reload(true);"; 
+				var url:URLRequest = new URLRequest("javascript:" + jscommand + " void(0);"); 
+				navigateToURL(url, "_self"); 
 			}
 
 			protected function creationCompleteHandler(event:FlexEvent):void
@@ -93,10 +99,13 @@
 	</s:BorderContainer>
 	
 	<mx:Image id="img" width="640" height="480" includeIn="verify" />
+	<s:HGroup>
+		
 	<s:Button id="picButton" 
 			  label="Take My Pic!" label.verify="Save This Pic To My Profile!" 
 			  click.base="picButton_clickHandler(event)" click.verify="savPicButton_clickHandler(event)"/>
-	
+	<s:Button label="Take another Pic!" click="currentState=''" includeIn="verify" />	
+	</s:HGroup>
 	
 
 </s:Application>
