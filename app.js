@@ -83,7 +83,16 @@ server.get('/p/:username', function(req, res){
       });
 	
 });
-
+server.get('/username', function(req,res){
+	res.writeHead(200, {'Content-Type': 'text/html'});
+	//console.log('username: '+ req.getAuthDetails().user.username);
+	if (!req.isAuthenticated()) {
+		res.end('');
+	} else {
+		res.end(req.getAuthDetails().user.username);
+	}
+	
+});
 server.get('/image/:objectID', function(req, res){
 	Picture.find({num: req.params.objectID }).last(function(pic){
 	//Picture.findById(req.params.objectID, function(pic){
@@ -96,6 +105,7 @@ server.get('/image/:objectID', function(req, res){
 
 server.post('/webcam', function(req, res){
 	var form = new formidable.IncomingForm();
+	console.log('webcam: ' + req.isAuthenticated() )
     form.parse(req, function(err, fields, files) {
 		console.log(sys.inspect([err,fields,files]));
 	});

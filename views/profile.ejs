@@ -2,11 +2,42 @@
 	
 
 <h2>Create Today&apos;s Photo</h2>
-<form action="/upload" enctype="multipart/form-data" method="post">
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="650" height="520" id="myBeardCam">
+                <param name="movie" value="/bin-debug/myBeardCam.swf" />
+                <param name="quality" value="high" />
+                <param name="bgcolor" value="#ffffff" />
+                <param name="allowScriptAccess" value="sameDomain" />
+                <param name="allowFullScreen" value="true" />
+				<param name="wmode" value="window" />
+                <!--[if !IE]>-->
+                <object type="application/x-shockwave-flash" data="/bin-debug/myBeardCam.swf" width="650" height="520">
+                    <param name="quality" value="high" />
+                    <param name="bgcolor" value="#ffffff" />
+                    <param name="allowScriptAccess" value="sameDomain" />
+                    <param name="allowFullScreen" value="true" />
+					<param name="wmode" value="window" />
+                <!--<![endif]-->
+                <!--[if gte IE 6]>-->
+                	<p> 
+                		Either scripts and active content are not permitted to run or Adobe Flash Player version
+                		10.0.0 or greater is not installed.
+                	</p>
+                <!--<![endif]-->
+                    <a href="http://www.adobe.com/go/getflashplayer">
+                        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash Player" />
+                    </a>
+                <!--[if !IE]>-->
+                </object>
+                <!--<![endif]-->
+            </object>
+
+<!--<form action="/upload" enctype="multipart/form-data" method="post">
 	
 	Photo: <input type="file" name="image" multiple="multiple"><br>
 	<input type="submit" value="Upload">
-</form>
+</form>-->
+
 
 <% } %>
 
