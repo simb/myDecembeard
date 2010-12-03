@@ -10,7 +10,9 @@ var sys = require('sys'),
 	ObjectID = require('mongodb/bson/bson').ObjectID,
 	mongoose = require('mongoose').Mongoose,
 	db       = mongoose.connect('mongodb://127.0.0.1/decembeard'),
-	Picture  = require('./models/picture');
+	Picture  = require('./models/picture'),
+	DateUtils = require('./lib/DateUtils');
+	
 
 //check our env var and set it to production if one is not provided
 var env = process.env.NODE_ENV || "production";

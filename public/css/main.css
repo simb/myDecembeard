@@ -32,3 +32,12 @@ body {
 	color:white;
 	text-decoration: none;
 }
+
+#daily-thumbnail{
+	float:left;
+	padding-right: 5px;
+}
+
+#footer{
+	clear: both;
+}
