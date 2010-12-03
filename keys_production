@@ -1,5 +1,5 @@
-exports.twitterConsumerKey= "hIFxxAPg6F7c385H3QfAQg";
-exports.twitterConsumerSecret= "7ujSgFhs4vMx9iiZ4yxnVApWO2ujfjlAEfgt7JT1WlE";
+exports.twitterConsumerKey= "KkDYBosk9Ew7UDKaXxaRQ";
+exports.twitterConsumerSecret= "5Q6Uneexkyz1tfEJpVTx9GtnWxkRsXqxzziz0atM";
 
 //facebook keys
 exports.fbId= "136200536433630";
