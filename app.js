@@ -99,7 +99,7 @@ server.post('/webcam', function(req, res){
 });
 
 server.post('/upload', function(req, res){
-	console.log('upload: ' + req.isAuthenticated() + server.env.NODE_ENV)
+	console.log('upload: ' + req.isAuthenticated() )
 	if (!req.isAuthenticated()) {
 		res.render('noauth.ejs')
 	}else{
@@ -181,7 +181,7 @@ server.get('/noauth', function(req, res, params) {
 
 // Example 500 page
 server.error(function(err, req, res){
-    console.dir(sys.inspect(err));
+    console.dir(sys.inspect([err.message]));
     res.render('500.ejs');
 });
 

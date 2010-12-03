@@ -35,7 +35,7 @@
 				req.method = URLRequestMethod.POST;
 				req.contentType = "multipart/form-data; boundary=" + multi.getBoundary();
 				req.data = postdata;
-				req.url = "http://localhost:8124/upload";
+				req.url = "http://localhost:8124/webcam";
 				
 				var ldr:URLLoader = new URLLoader();
 				ldr.addEventListener(IOErrorEvent.IO_ERROR, onFault);
