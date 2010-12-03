@@ -55,7 +55,7 @@ server.get('/', function(req, res, params) {
     var self = this;
     if (!req.isAuthenticated()) {
 		//Chirp.find().sort([['date', 'descending']]).all
-		Picture.find().sort([['created_on', 'descending']]).limit(10).all(function(pics){
+		Picture.find().sort([['created_on', 'descending']]).limit(9).all(function(pics){
 			res.render('index.ejs',{
 				locals: {
 					pictures: pics
@@ -129,9 +129,8 @@ server.post('/upload', function(req, res){
 
 server.get('/auth/twitter', function(req, res, params) {
     req.authenticate(['twitter'], function(error, authenticated) {
-	
-        if (authenticated) {
-            var oa = new OAuth("http://twitter.com/oauth/request_token",
+		if( authenticated ) {
+	        var oa = new OAuth("http://twitter.com/oauth/request_token",
            		"http://twitter.com/oauth/access_token",
 	        	twitterConsumerKey,
 	        	twitterConsumerSecret,
@@ -147,13 +146,11 @@ server.get('/auth/twitter', function(req, res, params) {
 			    });
 			    res.end('');
             });
-        }
-        else {
-            res.writeHead(303, {
-		        'Location': "/"
-		    });
-		    res.end('');
-        }
+	    }else {
+	        res.writeHead(200, {'Content-Type': 'text/html'})
+	        res.end("<html><h1>Twitter authentication failed :( </h1></html>")
+	    }
+        
     });
 })
 server.get ('/auth/facebook', function(req, res, params) {
