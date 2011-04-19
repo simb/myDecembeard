@@ -1,17 +1,17 @@
 //Hi There. Not sure why you can see this but I suppose its ok.
 //Lets setup the modules that we will need for this app
-var sys = require('sys'),
-	express = require('express'),
-	MemoryStore = require('connect/middleware/session/memory'),
-	auth = require('./lib/index'),
-	OAuth = require('oauth').OAuth,
-	formidable = require('formidable'),
-	fs = require('fs'),
-	ObjectID = require('mongodb/bson/bson').ObjectID,
-	mongoose = require('mongoose').Mongoose,
-	db       = mongoose.connect('mongodb://127.0.0.1/decembeard'),
-	Picture  = require('./models/picture'),
-	DateUtils = require('./lib/DateUtils');
+var sys = require('sys')
+	, express = require('express')
+	, MemoryStore = express.session.MemoryStore
+	, auth = require('./lib/index')
+	, OAuth = require('oauth').OAuth
+	, formidable = require('formidable')
+	, fs = require('fs')
+	//, ObjectID = require('mongodb/bson/bson').ObjectID
+	, mongoose = require('mongoose')
+	, db       = mongoose.connect('mongodb://127.0.0.1/decembeard')
+	, Picture  = require('./models/picture')
+	, DateUtils = require('./lib/DateUtils');
 	
 
 //check our env var and set it to production if one is not provided
@@ -30,13 +30,14 @@ catch(e) {
 
 //We need to create the server and initialize the modules we are gonna use.
 var server = express.createServer(
-	express.cookieDecoder(),
+	express.cookieParser(),
 	express.session({
-	    store: new MemoryStore({
+		  secret: 'some secret string'
+		, store: new MemoryStore({
 	        reapInterval: -1
 	    })
 	}),
-	express.bodyDecoder(),
+	express.bodyParser(),
 	auth([
 		auth.Twitter({
 	    	consumerKey: twitterConsumerKey,
@@ -44,8 +45,8 @@ var server = express.createServer(
 		}),
 		auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})
 	]),
-	express.staticProvider(__dirname + '/public'),
-	express.staticProvider(__dirname + '/webcam')
+	express.static(__dirname + '/public'),
+	express.static(__dirname + '/webcam')
 );
 //set the directory for express to look in for our views
 server.set('views', __dirname + '/views');
