@@ -16,3 +16,5 @@ Picture.pre('save', function (next) {
 	}
     next();
 });
+
+mongoose.model('Picture', Picture);

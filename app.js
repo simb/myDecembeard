@@ -10,7 +10,8 @@ var sys = require('sys')
 	//, ObjectID = require('mongodb/bson/bson').ObjectID
 	, mongoose = require('mongoose')
 	, db       = mongoose.connect('mongodb://127.0.0.1/decembeard')
-	, Picture  = require('./models/picture')
+	, PictureMode  = require('./models/picture')
+	, Picture  = mongoose.model('Picture')
 	, DateUtils = require('./lib/DateUtils');
 	
 
@@ -57,8 +58,8 @@ server.set('views', __dirname + '/views');
 server.get('/', function(req, res, params) {
     var self = this;
     if (!req.isAuthenticated()) {
-		//Chirp.find().sort([['date', 'descending']]).all
-		Picture.find().sort([['created_on', 'descending']]).limit(9).all(function(pics){
+		Picture.find({}).sort('created_on', -1).limit(9).exec(function (err, pics) {
+			console.log(pics);
 			res.render('index.ejs',{
 				locals: {
 					pictures: pics
